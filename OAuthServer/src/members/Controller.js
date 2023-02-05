@@ -1,11 +1,9 @@
 const Model = require("./Model");
 const jwt = require("./utils/jwt");
-const { randomUUID } = require("crypto");
 
 module.exports = {
-    getClientId: async (req, res) => {
-        console.log(randomUUID());
-        return res.send({ logged: true });
+    hostTest: async (req, res) => {
+        return res.send({msg: "Hello"});
     },
     register: async (req, res) => {
         try {
@@ -20,7 +18,8 @@ module.exports = {
             if (!user) return res.status(500).send({success: false, message: "User not created."});
             return res.status(201).send({ success: true, token: jwt.signToken() });
         } catch(e) {
-            if (e && e.code == 11000) return res.status(401).send({success: false, message: "Email already used."})
+            if (e && e.code == 11000) return res.status(401).send({success: false, message: "Email already used."});
+            console.error(e);
             return res.status(500).send(e);
         }
     },

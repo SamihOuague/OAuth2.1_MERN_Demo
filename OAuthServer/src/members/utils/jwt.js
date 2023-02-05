@@ -1,12 +1,16 @@
 let jwt = require("jsonwebtoken");
 
 module.exports = {
-    signToken: () => {
-        let token = jwt.sign({ iat: Date.now() }, process.env.SECRET_KEY);
+    signToken: (body = {}, secret = process.env.SECRET_KEY, expiresIn = (60*60)) => {
+        let token = jwt.sign({ ...body, iat: Date.now() }, secret, {expiresIn,});
         return token;
     },
-    verifyToken: (token) => {
-        let decoded = jwt.verify(token, process.env.SECRET_KEY);
-        return decoded;
+    verifyToken: (token, secret = process.env.SECRET_KEY) => {
+        try {
+            let decoded = jwt.verify(token, secret);
+            return decoded;
+        } catch {
+            return false;
+        }
     }
 }
