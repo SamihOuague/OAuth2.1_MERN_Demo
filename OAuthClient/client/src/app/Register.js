@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Resources, Spinner } from "./Resources";
 import { sha256 } from "js-sha256";
+import { Navigate } from "react-router-dom";
 
 function Register() {
     const [dataForm, setDataForm] = useState(null);
@@ -24,9 +25,7 @@ function Register() {
                     );
                 } else if (!data.payload.success) return <h2>{data.payload.message}</h2>
                 localStorage.setItem("token", data.payload.token);
-                return (
-                    <h2>{data.payload.token}</h2>
-                );
+                return <Navigate to={"/"}/>;
             }} />
         );
     }
